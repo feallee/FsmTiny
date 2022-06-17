@@ -1,15 +1,16 @@
 /*--------------------------------------------------------------------------
 FSMTNY.H
 
-Finite state machine(Mealy) tiny functions for ANSI C.
+Finite state machine(Mealy) tiny version 1.0 functions for ANSI C.
 
 Powered by feallee@hotmail.com at #2022/06/17#.
 --------------------------------------------------------------------------*/
 #ifndef __FSMTNY_H_
 #define __FSMTNY_H_
 #include <stddef.h>
+#define FSMTNY_VERSION	10
 /// <summary>
-/// 表示状态机中的一种状态。
+/// 表示状态机中的一种状态。如果需要切换状态，则必须在状态函数返回之前调用此函数。
 /// 注意：只允许在状态函数里调用函数 FsmTny_Change 和 FsmTny_GetCurrent，且不允许调用下面的函数：
 /// FsmTny_Initialize，FsmTny_Transit 和 FsmTny_Dispose。
 /// </summary>
@@ -35,13 +36,13 @@ FsmTnyState FsmTny_GetCurrent(void);
 unsigned char FsmTny_Transit(unsigned int value);
 
 /// <summary>
-/// 指定状态机的新状态。如果需要切换状态，则必须在状态函数返回前调用此函数。
+/// 指定状态机的新状态。
 /// </summary>
 /// <param name="state">新状态。如果为 NULL 则无效。</param>
 void FsmTny_Change(FsmTnyState state);
 
 /// <summary>
-/// 释放状态机使用资源。
+/// 释放状态机使用的资源。
 /// </summary>
 void FsmTny_Dispose(void);
 

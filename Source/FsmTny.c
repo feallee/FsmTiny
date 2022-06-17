@@ -11,17 +11,17 @@ void FsmTny_Initialize(FsmTnyState initialState, FsmTnyState finalState)
 }
 
 FsmTnyState FsmTny_GetCurrent(void)
-{	
+{
 	return Current;
 }
 
 unsigned char FsmTny_Transit(unsigned int value)
 {
 	unsigned char r = 0;
-	if (Current!= Final)
+	if (Current != Final)
 	{
 		if (Current)
-		{			
+		{
 			Current(value);
 			if (Next)
 			{
@@ -40,4 +40,6 @@ void FsmTny_Change(FsmTnyState state)
 }
 
 void FsmTny_Dispose(void)
-{}
+{
+	Initial = Final = Current = Next = NULL;
+}
