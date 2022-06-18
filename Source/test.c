@@ -17,7 +17,7 @@ void StopState(unsigned int value)
 	printf("\n停止状态:接收到按键=%u\n", value);
 	if (value == KEY_PLAY_PAUSE)
 	{
-		printf("开始播放:%s\n",MP3);
+		printf("开始播放:%s\n",MP3);//表示状态机中动作
 		FsmTny_Change(&fsm, PlayState);
 	}
 }
@@ -27,12 +27,12 @@ void PlayState(unsigned int value)
 	printf("\n播放状态:接收到按键=%u\n", value);
 	if (value == KEY_PLAY_PAUSE)
 	{
-		printf("开始暂停\n");
+		printf("开始暂停\n");//表示状态机中动作
 		FsmTny_Change(&fsm, PauseState);
 	}
 	else if (value == KEY_STOP)
 	{
-		printf("开始停止\n");
+		printf("开始停止\n");//表示状态机中动作
 		FsmTny_Change(&fsm, StopState);
 	}
 }
@@ -42,12 +42,12 @@ void PauseState(unsigned int value)
 	printf("\n暂停状态:接收到按键=%u\n", value);
 	if (value == KEY_PLAY_PAUSE)
 	{
-		printf("继续播放:%s\n", MP3);
+		printf("继续播放:%s\n", MP3);//表示状态机中动作
 		FsmTny_Change(&fsm, PlayState);
 	}
 	else if (value == KEY_STOP)
 	{
-		printf("开始停止\n");
+		printf("开始停止\n");//表示状态机中动作
 		FsmTny_Change(&fsm, StopState);
 	}
 }

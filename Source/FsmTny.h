@@ -22,9 +22,21 @@ typedef void (*FsmTnyState)(unsigned int value);
 /// </summary>
 typedef struct
 {
+	/// <summary>
+	/// 起始状态。
+	/// </summary>
 	FsmTnyState Initial;
+	/// <summary>
+	/// 最终状态。
+	/// </summary>
 	FsmTnyState Final;
+	/// <summary>
+	/// 当前状态。
+	/// </summary>
 	FsmTnyState Current;
+	/// <summary>
+	/// 新状态。
+	/// </summary>
 	FsmTnyState Next;
 }FsmTny;
 
