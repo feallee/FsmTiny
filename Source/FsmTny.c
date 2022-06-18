@@ -1,45 +1,55 @@
 
 #include "FsmTny.h"
 
-static FsmTnyState Initial, Final, Current, Next;
-
-void FsmTny_Initialize(FsmTnyState initialState, FsmTnyState finalState)
+void FsmTny_Initialize(FsmTny* fsmTny, FsmTnyState initialState, FsmTnyState finalState)
 {
-	Current = Initial = initialState;
-	Final = finalState;
-	Next = NULL;
+	if (fsmTny)
+	{
+		fsmTny->Current = fsmTny->Initial = initialState;
+		fsmTny->Final = finalState;
+		fsmTny->Next = NULL;
+	}
 }
 
-FsmTnyState FsmTny_GetCurrent(void)
+FsmTnyState FsmTny_GetCurrent(FsmTny* fsmTny)
 {
-	return Current;
+	return fsmTny ? fsmTny->Current : NULL;
 }
 
-unsigned char FsmTny_Transit(unsigned int value)
+unsigned char FsmTny_Transit(FsmTny* fsmTny, unsigned int value)
 {
 	unsigned char r = 0;
-	if (Current != Final)
+	if (fsmTny)
 	{
-		if (Current)
+		if (fsmTny->Current != fsmTny->Final)
 		{
-			Current(value);
-			if (Next)
+			if (fsmTny->Current)
 			{
-				Current = Next;
-				Next = NULL;
+				fsmTny->Current(value);
+				if (fsmTny->Next)
+				{
+					fsmTny->Current = fsmTny->Next;
+					fsmTny->Next = NULL;
+				}
+				r = 1;
 			}
-			r = 1;
 		}
 	}
 	return r;
 }
 
-void FsmTny_Change(FsmTnyState state)
+void FsmTny_Change(FsmTny* fsmTny, FsmTnyState state)
 {
-	Next = state;
+	if (fsmTny)
+	{
+		fsmTny->Next = state;
+	}
 }
 
-void FsmTny_Dispose(void)
+void FsmTny_Dispose(FsmTny* fsmTny)
 {
-	Initial = Final = Current = Next = NULL;
+	if (fsmTny)
+	{
+		fsmTny->Initial = fsmTny->Final = fsmTny->Current = fsmTny->Next = NULL;
+	}
 }

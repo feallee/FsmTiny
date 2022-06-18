@@ -6,54 +6,61 @@
 
 #define MP3	"国歌.mp3"
 
+FsmTny fsm;
+
 void StopState(unsigned int value);
 void PlayState(unsigned int value);
 void PauseState(unsigned int value);
 
 void StopState(unsigned int value)
 {
-	printf("停止状态:按键=%u\n", value);
+	printf("\n停止状态:接收到按键=%u\n", value);
 	if (value == KEY_PLAY_PAUSE)
 	{
-		FsmTny_Change(PlayState);
+		printf("开始播放:%s\n",MP3);
+		FsmTny_Change(&fsm, PlayState);
 	}
 }
 
 void PlayState(unsigned int value)
 {
-	printf("播放状态(%s):按键=%u\n", MP3, value);
+	printf("\n播放状态:接收到按键=%u\n", value);
 	if (value == KEY_PLAY_PAUSE)
 	{
-		FsmTny_Change(PauseState);
+		printf("开始暂停\n");
+		FsmTny_Change(&fsm, PauseState);
 	}
 	else if (value == KEY_STOP)
 	{
-		FsmTny_Change(StopState);
+		printf("开始停止\n");
+		FsmTny_Change(&fsm, StopState);
 	}
 }
 
 void PauseState(unsigned int value)
 {
-	printf("暂停状态:按键=%u\n", value);
+	printf("\n暂停状态:接收到按键=%u\n", value);
 	if (value == KEY_PLAY_PAUSE)
 	{
-		FsmTny_Change(PlayState);
+		printf("继续播放:%s\n", MP3);
+		FsmTny_Change(&fsm, PlayState);
 	}
 	else if (value == KEY_STOP)
 	{
-		FsmTny_Change(StopState);
+		printf("开始停止\n");
+		FsmTny_Change(&fsm, StopState);
 	}
 }
 
 int main(void)
 {
-	FsmTny_Initialize(StopState, NULL);
+
+	FsmTny_Initialize(&fsm, StopState, NULL);
 	//模拟按键事件。
-	FsmTny_Transit(KEY_PLAY_PAUSE);
-	FsmTny_Transit(KEY_PLAY_PAUSE);
-	FsmTny_Transit(KEY_PLAY_PAUSE);
-	FsmTny_Transit(KEY_STOP);
-	FsmTny_Transit(KEY_STOP);
-	FsmTny_Dispose();
+	FsmTny_Transit(&fsm, KEY_PLAY_PAUSE);
+	FsmTny_Transit(&fsm, KEY_PLAY_PAUSE);
+	FsmTny_Transit(&fsm, KEY_PLAY_PAUSE);
+	FsmTny_Transit(&fsm, KEY_STOP);	
+	FsmTny_Dispose(&fsm);
 	return 0;
 }
